@@ -104,9 +104,15 @@
   </div>`;
 }
         function renderBody(){const body=document.getElementById('tablebody');body.innerHTML='';
-            tournaments.forEach((t,i)=>{const row=document.createElement('tr');row.innerHTML='<td>'+t.name+'<button onclick="deleteTournament('+i+')" style="margin-left:10px;background:#e74c3c;color:white;border:none;padding:2px 8px;border-radius:4px;font-size:0.7em;">X</button></td>'+players.map((p,j)=>`<td><input type="number" value="${t.scores[j]||''}" onchange="updateScore(${i},${j},this.value)" placeholder="—"></td>`).join('');body.appendChild(row);});
+            tournaments.forEach((t,i)=>{const row=document.createElement('tr');row.innerHTML='<td>'+t.name+'<button onclick="deleteTournament('+i+')" style="margin-left:10px;background:#e74c3c;color:white;border:none;padding:2px 8px;border-radius:4px;font-size:0.7em;">X</button></td>'+players.map((p,j)=>`<td><input type="number" step="0.1" value="${t.scores[j]||''}" onchange="updateScore(${i},${j},this.value)" placeholder="—"></td>`).join('');body.appendChild(row);});
             const totalRow=document.createElement('tr');totalRow.className='total-row';totalRow.innerHTML='<th>TOTALE</th>'+players.map((p,j)=>`<td>${getTotal(j)}</td>`).join('');body.appendChild(totalRow);}
-        function getTotal(playerIdx){return tournaments.reduce((sum,t)=>sum+(parseInt(t.scores[playerIdx])||0),0);}
+        function getTotal(playerIdx){
+  const total = tournaments.reduce((sum,t)=>{
+    const score = parseFloat(t.scores[playerIdx]);
+    return sum + (isNaN(score) ? 0 : score);
+  }, 0);
+  return total.toFixed(1);
+}
         function updateScore(tIdx,pIdx,value){tournaments[tIdx].scores[pIdx]=value;renderTable();}
         function openModal(){document.getElementById('modal').style.display='block';document.getElementById('tournamentname').focus();}
         function closeModal(){document.getElementById('modal').style.display='none';}
