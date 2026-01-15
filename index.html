@@ -89,31 +89,13 @@
         </div>
     </div>
 
-    <script type="module">
+    <script>
 
 
 
 
   
-  // 1️⃣ INIZIALIZZAZIONE FIREBASE + FIRESTORE
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-  import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "…",
-    authDomain: "…",
-    projectId: "…",
-    storageBucket: "…",
-    messagingSenderId: "…",
-    appId: "…"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  window.db = getFirestore(app);
-
-  // 2️⃣ QUI PUOI INSERIRE TUTTE LE TUE FUNZIONI ESISTENTI
-  // renderTable(), saveData(), loadData() ecc.
-
+  
      
         const players=[
   {name:'Gennaro',photo:'Gennaro.jpg'},
@@ -209,5 +191,26 @@
 
    
     </script>
+
+
+ <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBqkJaCnZ6Hzm7ytyoj3_dKeZ0kuNbJXbI",
+    authDomain: "fantatennis-ecd35.firebaseapp.com",
+    projectId: "fantatennis-ecd35",
+    storageBucket: "fantatennis-ecd35.firebasestorage.app",
+    messagingSenderId: "6582569035",
+    appId: "1:6582569035:web:d7f57d5473d635197f25ce"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>   
 </body>
 </html>
