@@ -178,6 +178,22 @@
       document.head.removeChild(style);
     });
 }
+
+
+   function exportCSV(){
+  let csv = 'TORNEO,' + players.map(p=>p.name).join(',') + '
+';
+  tournaments.forEach(t => {
+    csv += t.name + ',' + players.map((p,j)=>t.scores[j] || '').join(',') + '
+';
+  });
+  csv += 'TOTALE,' + players.map((p,j)=>getTotal(j)).join(',');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='FantaTennis_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+  showStatus('CSV Excel OK!');
+}     
     </script>
 </body>
 </html>
