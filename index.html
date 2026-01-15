@@ -122,65 +122,7 @@
   }, 0);
   return total.toFixed(1);
 }
-        function updateScore(tIdx,pIdx,value){tournaments[tIdx].scores[pIdx]=value;renderTable();}
-        function openModal(){document.getElementById('modal').style.display='block';document.getElementById('tournamentname').focus();}
-        function closeModal(){document.getElementById('modal').style.display='none';}
-        function addTournament(){const name=document.getElementById('tournamentname').value.trim();if(!name)return;tournaments.push({name:name,scores:{}});saveData();renderTable();closeModal();document.getElementById('tournamentname').value='';}
-        function deleteTournament(idx){if(confirm('Eliminare?')){tournaments.splice(idx,1);saveData();renderTable();}}
-        function saveData(){localStorage.setItem('fantatennis',JSON.stringify(tournaments));showStatus('Salvato!');}
-        function resetData(){if(confirm('Reset tutto?')){tournaments=[];localStorage.removeItem('fantatennis');renderTable();showStatus('Resettato');}}
-        function loadData(){const saved=localStorage.getItem('fantatennis');if(saved)tournaments=JSON.parse(saved);}
-        function showStatus(msg){const status=document.getElementById('status');status.textContent=msg;status.style.display='block';setTimeout(()=>status.style.display='none',2000);}
-        document.addEventListener('DOMContentLoaded',init);
-        window.onclick=e=>{if(e.target.id==='modal')closeModal();};
-        document.getElementById('tournamentname').addEventListener('keypress',e=>{if(e.key==='Enter')addTournament();});
-        function exportPDF(){
-  // Salva stato tabella
-  const table = document.getElementById('fantatable');
-  const style = document.createElement('style');
-  style.innerHTML = `
-    @media print {
-      body { margin: 0; padding: 5mm; }
-      table { border-collapse: collapse; width: 100%; font-size: 10px; }
-      th, td { border: 1px solid #ddd; padding: 4px; text-align: center; }
-      th { background: #27ae60; color: white; }
-      .total-row { font-weight: bold; background: #ecf0f1; }
-      .player-avatar { width: 30px; height: 30px; margin: 0 auto; }
-      tr { page-break-inside: avoid; }
-    }
-  `;
-  document.head.appendChild(style);
-
-  // Usa html2pdf con opzioni semplici
-  const opt = {
-    margin: 5,
-    filename: 'FantaTennis_' + new Date().toISOString().split('T')[0] + '.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { 
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff'
-    },
-    jsPDF: { 
-      orientation: 'landscape',
-      unit: 'mm', 
-      format: 'a4'
-    }
-  };
-
-  html2pdf()
-    .set(opt)
-    .from(table)
-    .save()
-    .then(() => {
-      showStatus('📄 PDF Generato!');
-      document.head.removeChild(style);
-    });
-}
-
-
-   function exportCSV(){
+       function exportCSV(){
   let csv = 'TORNEO,' + players.map(p=>p.name).join(',') + '
 ';
   tournaments.forEach(t => {
@@ -194,6 +136,24 @@
   a.click();
   showStatus('CSV Excel OK!');
 }     
+        function updateScore(tIdx,pIdx,value){tournaments[tIdx].scores[pIdx]=value;renderTable();}
+        function openModal(){document.getElementById('modal').style.display='block';document.getElementById('tournamentname').focus();}
+        function closeModal(){document.getElementById('modal').style.display='none';}
+        function addTournament(){const name=document.getElementById('tournamentname').value.trim();if(!name)return;tournaments.push({name:name,scores:{}});saveData();renderTable();closeModal();document.getElementById('tournamentname').value='';}
+        function deleteTournament(idx){if(confirm('Eliminare?')){tournaments.splice(idx,1);saveData();renderTable();}}
+        function saveData(){localStorage.setItem('fantatennis',JSON.stringify(tournaments));showStatus('Salvato!');}
+        function resetData(){if(confirm('Reset tutto?')){tournaments=[];localStorage.removeItem('fantatennis');renderTable();showStatus('Resettato');}}
+        function loadData(){const saved=localStorage.getItem('fantatennis');if(saved)tournaments=JSON.parse(saved);}
+        function showStatus(msg){const status=document.getElementById('status');status.textContent=msg;status.style.display='block';setTimeout(()=>status.style.display='none',2000);}
+        document.addEventListener('DOMContentLoaded',init);
+        window.onclick=e=>{if(e.target.id==='modal')closeModal();};
+        document.getElementById('tournamentname').addEventListener('keypress',e=>{if(e.key==='Enter')addTournament();});
+        
+        
+        
+        
+
+   
     </script>
 </body>
 </html>
