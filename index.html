@@ -55,7 +55,7 @@
         .status{display:none;background:#27ae60;color:white;padding:10px;border-radius:8px;margin-top:15px;text-align:center;}
         @media(max-width:768px){.title{font-size:1.8em;}.table-wrapper{padding:15px;font-size:0.8em;}th,td{padding:6px 8px;height:45px;}}
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 </head>
 <body>
     <div class="container">
@@ -73,7 +73,7 @@
             <button class="btn btn-primary" onclick="openModal()">+ Aggiungi Torneo</button>
             <button class="btn btn-success" onclick="saveData()">💾 Salva</button>
             <button class="btn btn-danger" onclick="resetData()">🔄 Reset</button>
-            <button class="btn" style="background:#3498db;color:white;" onclick="exportPDF()">📥 Esporta PDF</button>
+            <button onclick="exportCSV()" style="background:#8e44ad;color:white;border:none;padding:8px 12px;border-radius:6px;font-weight:600;">📊 CSV Excel</button>
         </div>
         <div id="status" class="status"></div>
     </div>
@@ -134,49 +134,22 @@
         document.addEventListener('DOMContentLoaded',init);
         window.onclick=e=>{if(e.target.id==='modal')closeModal();};
         document.getElementById('tournamentname').addEventListener('keypress',e=>{if(e.key==='Enter')addTournament();});
-        function exportPDF(){
-  // Salva stato tabella
-  const table = document.getElementById('fantatable');
-  const style = document.createElement('style');
-  style.innerHTML = `
-    @media print {
-      body { margin: 0; padding: 5mm; }
-      table { border-collapse: collapse; width: 100%; font-size: 10px; }
-      th, td { border: 1px solid #ddd; padding: 4px; text-align: center; }
-      th { background: #27ae60; color: white; }
-      .total-row { font-weight: bold; background: #ecf0f1; }
-      .player-avatar { width: 30px; height: 30px; margin: 0 auto; }
-      tr { page-break-inside: avoid; }
-    }
-  `;
-  document.head.appendChild(style);
-
-  // Usa html2pdf con opzioni semplici
-  const opt = {
-    margin: 5,
-    filename: 'FantaTennis_' + new Date().toISOString().split('T')[0] + '.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { 
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff'
-    },
-    jsPDF: { 
-      orientation: 'landscape',
-      unit: 'mm', 
-      format: 'a4'
-    }
-  };
-
-  html2pdf()
-    .set(opt)
-    .from(table)
-    .save()
-    .then(() => {
-      showStatus('📄 PDF Generato!');
-      document.head.removeChild(style);
-    });
+        function exportCSV(){
+  let csv = 'TORNEO,' + players.map(p=>p.name).join(',') + '
+';
+  tournaments.forEach(t => {
+    csv += `"${t.name}",` + players.map((p,j) => t.scores[j] || '').join(',') + '
+';
+  });
+  csv += 'TOTALE,' + players.map((p,j)=>getTotal(j)).join(',');
+  
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'FantaTennis_' + new Date().toISOString().split('T')[0] + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showStatus('✅ CSV per Excel OK!');
 }
     </script>
 </body>
