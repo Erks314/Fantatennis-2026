@@ -9,7 +9,7 @@
 body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#1a472a 0%,#0f2818 50%,#1a472a 100%);min-height:100vh;padding:20px;color:#333;}
 .container{max-width:1400px;margin:0 auto;}
 .header{text-align:center;margin-bottom:30px;}
-.title{font-size:2.5em;font-weight:900;background:linear-gradient(135deg,#FFD700 0%,#FFA500 50%,#FF8C00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:2px 2px 4px rgba(0,0,0,0.3);letter-spacing:1px;text-transform:uppercase;}
+.title{font-size:2.5em;font-weight:900;background:linear-gradient(135deg,#FFD700 0%,#FFA500 50%,#FF8C00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:2px 2px 4px rgba(0,0,0,0.3);letter-spacing:1px;text-transform:uppercase;}
 .subtitle{font-size:1em;color:#fff;opacity:0.9;font-weight:300;}
 .table-wrapper{background:rgba(255,255,255,0.95);border-radius:15px;padding:20px;box-shadow:0 15px 40px rgba(0,0,0,0.3);overflow:auto;}
 table{width:100%;border-collapse:collapse;font-size:0.9em;}
@@ -19,7 +19,7 @@ th{background:linear-gradient(135deg,#1a472a 0%,#2d6b4a 100%);color:white;font-w
 .player-name{font-size:0.75em;color:white;font-weight:600;}
 input{width:100%;padding:6px;border:1px solid #ddd;border-radius:5px;font-size:1em;font-weight:500;text-align:center;color:#1a472a;transition:all 0.2s;}
 input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 0 2px rgba(255,215,0,0.2);}
-.total-row {background: linear-gradient(135deg, #1a472a 0%, #2d6b4a 100%)!important;color:white!important;font-weight:bold;font-size:1.1em!important;border-bottom:none!important;border-radius:0 0 0 8px;}
+.total-row{background:linear-gradient(135deg,#1a472a 0%,#2d6b4a 100%)!important;color:white!important;font-weight:bold;font-size:1.1em!important;border-bottom:none!important;border-radius:0 0 0 8px;}
 .total-row td{border-radius:0 0 8px 0;}
 .controls{margin-top:25px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
 .btn{padding:12px 25px;border:none;border-radius:8px;font-size:0.95em;font-weight:600;cursor:pointer;transition:all 0.3s;text-transform:uppercase;}
@@ -75,40 +75,36 @@ input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 
 <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // CONFIG FIREBASE
-  const firebaseConfig = {
-      apiKey: "AIzaSyBqkJaCnZ6Hzm7ytyoj3_dKeZ0kuNbJXbI",
-      authDomain: "fantatennis-ecd35.firebaseapp.com",
-      projectId: "fantatennis-ecd35",
-      storageBucket: "fantatennis-ecd35.firebasestorage.app",
-      messagingSenderId: "6582569035",
-      appId: "1:6582569035:web:d7f57d5473d635197f25ce"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  window.db = db; // rende db globale
-  alert("Firebase inizializzato correttamente"); // test diagnostico
+    // CONFIG FIREBASE
+    const firebaseConfig = {
+        apiKey: "AIzaSyBqkJaCnZ6Hzm7ytyoj3_dKeZ0kuNbJXbI",
+        authDomain: "fantatennis-ecd35.firebaseapp.com",
+        projectId: "fantatennis-ecd35",
+        storageBucket: "fantatennis-ecd35.firebasestorage.app",
+        messagingSenderId: "6582569035",
+        appId: "1:6582569035:web:d7f57d5473d635197f25ce"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    window.db = db; // serve perché il resto del codice usa db globalmente
 </script>
 
 <script>
 const players=[
-  {name:'Gennaro',photo:'Gennaro.jpg'},
-  {name:'Mirko',photo:'Mirko.jpg'},
-  {name:'Federico',photo:'Federico.jpg'},
-  {name:'Ciro',photo:'Ciro.jpg'},
-  {name:'Damiano',photo:'Damiano.jpg'},
-  {name:'Carlo',photo:'Carlo.jpg'},
-  {name:'Francesco',photo:'Francesco.jpg'},
-  {name:'Friarello',photo:'Friarello.jpg'},
-  {name:'Giuseppe',photo:'Giuseppe.jpg'},
-  {name:'Donatello',photo:'Donatello.jpg'}
+    {name:'Gennaro',photo:'Gennaro.jpg'},
+    {name:'Mirko',photo:'Mirko.jpg'},
+    {name:'Federico',photo:'Federico.jpg'},
+    {name:'Ciro',photo:'Ciro.jpg'},
+    {name:'Damiano',photo:'Damiano.jpg'},
+    {name:'Carlo',photo:'Carlo.jpg'},
+    {name:'Francesco',photo:'Francesco.jpg'},
+    {name:'Friarello',photo:'Friarello.jpg'},
+    {name:'Giuseppe',photo:'Giuseppe.jpg'},
+    {name:'Donatello',photo:'Donatello.jpg'}
 ];
 let tournaments=[];
 
-function init(){ 
-    alert("Script iniziato"); // test diagnostico
-    loadData(); 
-}
+function init(){ loadData(); }
 
 function renderTable(){ renderHead(); renderBody(); }
 
@@ -151,9 +147,14 @@ function openModal(){ document.getElementById('modal').style.display='block'; do
 function closeModal(){ document.getElementById('modal').style.display='none'; }
 
 function addTournament(){
-    const name=document.getElementById('tournamentname').value.trim();
+    const name = document.getElementById('tournamentname').value.trim();
     if(!name) return;
-    tournaments.push({name:name,scores:{}});
+
+    // inizializzo scores per tutti i giocatori
+    const scores = {};
+    for(let i=0;i<players.length;i++){ scores[i]=''; }
+
+    tournaments.push({name, scores});
     saveData();
     renderTable();
     closeModal();
@@ -177,18 +178,17 @@ function saveData(){
 function resetData(){
     if(confirm('Reset tutto?')){
         tournaments=[];
-        db.collection("fantatennis").doc("shared").set({tournaments})
-        .then(()=> showStatus('Resettato!'))
-        .catch(err => showStatus('❌ Errore reset: '+err));
+        const emptyScores = {};
+        for(let i=0;i<players.length;i++) emptyScores[i]='';
+        db.collection("fantatennis").doc("shared").set({tournaments});
         renderTable();
+        showStatus('Resettato!');
     }
 }
 
 function loadData(){
     db.collection("fantatennis").doc("shared").onSnapshot(snap=>{
-        alert("Snapshot triggerato"); // test diagnostico
-        if(snap.exists()){
-            alert("Snap esiste!"); // test diagnostico
+        if(snap.exists){
             tournaments = snap.data().tournaments || [];
             renderTable();
         }
