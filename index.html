@@ -60,6 +60,29 @@ input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 
 document.addEventListener('DOMContentLoaded', () => {
   highlightPrizeTable();
 });
+  <script>
+  // ... tutto il tuo script esistente qui ...
+
+  // ---- Aggiungi questo in fondo ----
+  function highlightPrizeTable() {
+      const rows = document.querySelectorAll('.prize-table tbody tr');
+      rows.forEach(row => {
+          const tds = Array.from(row.querySelectorAll('td')).slice(1); // numeri
+          tds.forEach(td => td.classList.add('bold-num')); // tutti in grassetto
+
+          let max = Math.max(...tds.map(td => parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.')) || 0));
+
+          tds.forEach(td => {
+              const num = parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.')) || 0;
+              if(num === max) td.classList.add('bold-max'); // massimo in rosso
+          });
+      });
+  }
+
+  window.addEventListener('load', () => {
+      highlightPrizeTable();
+  });
+</script>  
 </style>
 </head>
 <body>
