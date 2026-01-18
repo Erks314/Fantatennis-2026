@@ -39,34 +39,26 @@ input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 
 @media(max-width:768px){.title{font-size:1.8em;}.table-wrapper{padding:15px;font-size:0.8em;}th,td{padding:6px 8px;height:45px;}}
 /* ===== FIX TESTO TABELLA PREMI ===== */
 .prize-table td, .prize-table th { color:white; font-weight:bold; }
-    // ===== GESTIONE NUMERI ROSSI NELLA TABELLA PREMI =====
-function renderPrizeTable(){
+    function highlightPrizeTable() {
   const rows = document.querySelectorAll('.prize-table tbody tr');
-  rows.forEach(row=>{
-    let values = [];
-    row.querySelectorAll('td').forEach((td,i)=>{
-      if(i>0){
-        // rimuoviamo eventuali classi precedenti
-        td.classList.remove('bold-max');
-        td.classList.add('bold-num');
-        // prendiamo solo il numero
-        let num = parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.'));
-        values.push(num);
-      }
+  rows.forEach(row => {
+    let max = 0;
+    const tds = Array.from(row.querySelectorAll('td')).slice(1); // prendi solo colonne numeriche
+    tds.forEach(td => {
+      td.style.fontWeight = 'bold'; // tutti i numeri in grassetto
+      const num = parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.')) || 0;
+      if (num > max) max = num;
     });
-    let max = Math.max(...values);
-    row.querySelectorAll('td').forEach((td,i)=>{
-      if(i>0){
-        let num = parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.'));
-        if(num === max) td.classList.add('bold-max'); // aggiunge rosso + grassetto
-      }
+    tds.forEach(td => {
+      const num = parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.')) || 0;
+      if (num === max) td.style.color = 'red'; // massimo in rosso
     });
   });
 }
 
-// Chiama la funzione subito dopo che la tabella è renderizzata
-document.addEventListener('DOMContentLoaded',()=>{
-  renderPrizeTable();
+// Chiamala subito dopo che la pagina e la tabella sono caricate
+document.addEventListener('DOMContentLoaded', () => {
+  highlightPrizeTable();
 });
 </style>
 </head>
