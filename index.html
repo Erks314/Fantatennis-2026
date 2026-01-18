@@ -10,13 +10,13 @@ body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#1a472a
 .container{max-width:1400px;margin:0 auto;}
 .header{text-align:center;margin-bottom:30px;}
 .title{font-size:2.5em;font-weight:900;background:linear-gradient(135deg,#FFD700 0%,#FFA500 50%,#FF8C00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:2px 2px 4px rgba(0,0,0,0.3);letter-spacing:1px;text-transform:uppercase;}
-.table-wrapper{background:rgba(255,255,255,0.95);border-radius:15px;padding:20px;box-shadow:0 15px 40px rgba(0,0,0,0.3);overflow:auto;}
+.table-wrapper{background:rgba(255,255,255,0.95);border-radius:15px;padding:20px;box-shadow:0 15px 40px rgba(0,0,0,0.3);overflow:auto;margin-bottom:20px;}
 table{width:100%;border-collapse:collapse;font-size:0.9em;}
 th,td{padding:8px 12px;text-align:center;border-bottom:1px solid #eee;height:50px;vertical-align:middle;}
 th{background:linear-gradient(135deg,#1a472a 0%,#2d6b4a 100%);color:white;font-weight:bold;font-size:0.85em;border-radius:8px 8px 0 0;}
 .player-avatar{width:45px;height:45px;margin:0 auto 5px;background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2em;font-weight:bold;color:white;box-shadow:0 3px 10px rgba(255,215,0,0.3);border:2px solid white;}
 .player-name{font-size:0.75em;color:white;font-weight:600;}
-input{width:100%;padding:6px;border:1px solid #ddd;border-radius:5px;font-size:1em;font-weight:bold;text-align:center;color:black;transition:all 0.2s;}
+input{width:100%;padding:6px;border:1px solid #ddd;border-radius:5px;font-size:1em;font-weight:500;text-align:center;color:#1a472a;transition:all 0.2s;}
 input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 0 2px rgba(255,215,0,0.2);}
 .total-row {background: linear-gradient(135deg, #1a472a 0%, #2d6b4a 100%)!important;color:white!important;font-weight:bold;font-size:1.1em!important;border-bottom:none!important;border-radius:0 0 0 8px;}
 .total-row td{border-radius:0 0 8px 0;}
@@ -34,20 +34,19 @@ input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 
 .modal-input:focus{outline:none;border-color:#FFD700;}
 .modal-buttons{display:flex;gap:10px;justify-content:flex-end;}
 .status{display:none;background:#27ae60;color:white;padding:10px;border-radius:8px;margin-top:15px;text-align:center;}
-.bold-max input{color:red !important;}
+.bold-num{font-weight:bold;}
+.bold-max{font-weight:bold;color:red;}
+.stats-table-wrapper{background:rgba(255,255,255,0.95);border-radius:15px;padding:15px;box-shadow:0 15px 40px rgba(0,0,0,0.3);margin-bottom:20px;font-size:0.85em;}
+.stats-table-wrapper table th, .stats-table-wrapper table td{padding:6px 10px;}
+.stats-table-wrapper th{font-size:0.8em;}
+.stats-table-wrapper td{color:white;font-weight:bold;}
 @media(max-width:768px){.title{font-size:1.8em;}.table-wrapper{padding:15px;font-size:0.8em;}th,td{padding:6px 8px;height:45px;}}
-
-/* Stili tabella montepremi */
-.prize-table td, .prize-table th { color:white; font-weight:bold; }
-.prize-table th { background: linear-gradient(135deg,#1a472a 0%,#2d6b4a 100%); }
 </style>
-
 </head>
 <body>
 <div class="container">
     <div class="header">
         <h1 class="title">⚡ FantaTennis 2026</h1>
-        <!-- Ranking condiviso rimosso -->
     </div>
 
     <!-- TABELLA MONTEPREMI -->
@@ -90,7 +89,7 @@ input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 
         </table>
     </div>
 
-    <!-- TABELLA TORNEI -->
+    <!-- TABELLA PRINCIPALE TORNEI -->
     <div class="table-wrapper">
         <table id="fantatable">
             <thead id="tablehead"></thead>
@@ -98,6 +97,22 @@ input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 
         </table>
     </div>
 
+    <!-- TABELLA STATISTICHE GIOCATORI -->
+    <div class="stats-table-wrapper">
+        <table id="statstable">
+            <thead>
+                <tr>
+                    <th>GIOCATORE</th>
+                    <th>VITTORIE 🥇</th>
+                    <th>SECONDI 🥈</th>
+                    <th>TERZI 🥉</th>
+                </tr>
+            </thead>
+            <tbody id="statsbody"></tbody>
+        </table>
+    </div>
+
+    <!-- BOTTONI -->
     <div class="controls">
         <button class="btn btn-primary" onclick="openModal()">+ Aggiungi Torneo</button>
         <button class="btn btn-success" onclick="saveData()">💾 Salva</button>
@@ -119,18 +134,18 @@ input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 
     </div>
 </div>
 
-<!-- FIREBASE -->
+<!-- FIREBASE COMPAT -->
 <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore-compat.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY_HERE",
-  authDomain: "fantatennis-ecd35.firebaseapp.com",
-  projectId: "fantatennis-ecd35",
-  storageBucket: "fantatennis-ecd35.firebasestorage.app",
-  messagingSenderId: "6582569035",
-  appId: "1:6582569035:web:d7f57d5473d635197f25ce"
+    apiKey: "AIzaSyBqkJaCnZ6Hzm7ytyoj3_dKeZ0kuNbJXbI",
+    authDomain: "fantatennis-ecd35.firebaseapp.com",
+    projectId: "fantatennis-ecd35",
+    storageBucket: "fantatennis-ecd35.firebasestorage.app",
+    messagingSenderId: "6582569035",
+    appId: "1:6582569035:web:d7f57d5473d635197f25ce"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -150,19 +165,20 @@ const players=[
   {name:'Giuseppe',photo:'Giuseppe.jpg'},
   {name:'Donatello',photo:'Donatello.jpg'}
 ];
-
 let tournaments=[];
 
-// ------------------------- FUNZIONI -------------------------
-function init(){ loadData(); renderPrizeTable(); renderTable(); }
+function init(){ loadData(); renderPrizeTable(); }
 
-// MONTEPREMI
 function renderPrizeTable(){
-  // rimane così come già fatto
+  const rows=document.querySelectorAll('.prize-table tbody tr');
+  rows.forEach(row=>{
+    row.querySelectorAll('td').forEach((td,i)=>{
+      if(i>0) td.style.fontWeight='bold';
+    });
+  });
 }
 
-// TORNEI
-function renderTable(){ renderHead(); renderBody(); highlightScoresTable(); }
+function renderTable(){ renderHead(); renderBody(); renderStats(); }
 
 function renderHead(){
   const head=document.getElementById('tablehead');
@@ -178,7 +194,6 @@ function renderHead(){
 function renderBody(){
   const body=document.getElementById('tablebody');
   body.innerHTML='';
-
   if(tournaments.length===0){
     const row=document.createElement('tr');
     row.innerHTML='<td colspan="'+(players.length+1)+'" style="text-align:center;color:#555;padding:15px;">Nessun torneo ancora</td>';
@@ -187,18 +202,18 @@ function renderBody(){
     tournaments.forEach((t,i)=>{
       const row=document.createElement('tr');
       row.innerHTML='<td>'+t.name+'<button onclick="deleteTournament('+i+')" style="margin-left:10px;background:#e74c3c;color:white;border:none;padding:2px 8px;border-radius:4px;font-size:0.7em;">X</button></td>'
-        + players.map((p,j)=>`<td><input type="number" step="0.1" value="${t.scores[j]||''}" onchange="updateScore(${i},${j},this.value)" placeholder="—"></td>`).join('');
+        + players.map((p,j)=>`<td><input type="number" step="0.1" value="${t.scores[j]||''}" onchange="updateScore(${i},${j},this.value)" placeholder="—" style="font-weight:bold;color:black;"></td>`).join('');
       body.appendChild(row);
     });
   }
-
   const totalRow=document.createElement('tr');
   totalRow.className='total-row';
-  totalRow.innerHTML='<th>TOTALE</th>'+players.map((p,j)=>`<td>${getTotal(j)}</td>`).join('');
+  totalRow.innerHTML='<th>TOTALE</th>'+players.map((p,j)=>`<td style="color:white;">${getTotal(j)}</td>`).join('');
   body.appendChild(totalRow);
+  highlightRedMax();
 }
 
-// TOTALE
+// calcola totali per giocatore
 function getTotal(idx){
   return tournaments.reduce((sum,t)=>{
     const s=parseFloat(t.scores[idx]);
@@ -206,16 +221,26 @@ function getTotal(idx){
   },0).toFixed(1);
 }
 
-// AGGIORNA SCORE
-function updateScore(tIdx,pIdx,value){
-    tournaments[tIdx].scores[pIdx]=value;
-    renderTable();
+// evidenzia massimo in rosso in ogni riga
+function highlightRedMax(){
+  const rows=document.querySelectorAll('#tablebody tr');
+  rows.forEach(row=>{
+    const tds=Array.from(row.querySelectorAll('td')).slice(1);
+    if(tds.length===0) return;
+    let max=Math.max(...tds.map(td=>parseFloat(td.querySelector('input').value)||0));
+    tds.forEach(td=>{
+      const val=parseFloat(td.querySelector('input').value)||0;
+      td.querySelector('input').style.color=(val===max && val!==0)?'red':'black';
+    });
+  });
 }
+
+// aggiorna punteggio
+function updateScore(tIdx,pIdx,value){ tournaments[tIdx].scores[pIdx]=value; renderTable(); }
 
 // MODAL
 function openModal(){ document.getElementById('modal').style.display='block'; document.getElementById('tournamentname').focus(); }
 function closeModal(){ document.getElementById('modal').style.display='none'; }
-
 function addTournament(){
   const name=document.getElementById('tournamentname').value.trim();
   if(!name) return;
@@ -225,13 +250,32 @@ function addTournament(){
   closeModal();
   document.getElementById('tournamentname').value='';
 }
-
 function deleteTournament(idx){
   if(confirm('Eliminare?')){
     tournaments.splice(idx,1);
     saveData();
     renderTable();
   }
+}
+
+// STATISTICHE
+function renderStats(){
+  const body=document.getElementById('statsbody');
+  body.innerHTML='';
+  players.forEach((p,j)=>{
+    let wins=0, second=0, third=0;
+    tournaments.forEach(t=>{
+      const scores=players.map((pl,k)=>parseFloat(t.scores[k])||0);
+      const sorted=[...scores].sort((a,b)=>b-a);
+      const val=scores[j];
+      if(val===sorted[0] && val!==0) wins++;
+      else if(val===sorted[1] && val!==0) second++;
+      else if(val===sorted[2] && val!==0) third++;
+    });
+    const row=document.createElement('tr');
+    row.innerHTML=`<td>${p.name}</td><td>${wins}</td><td>${second}</td><td>${third}</td>`;
+    body.appendChild(row);
+  });
 }
 
 // FIRESTORE
@@ -259,7 +303,6 @@ function loadData(){
   });
 }
 
-// CSV
 function exportCSV(){
   let csv = 'TORNEO,' + players.map(p=>p.name).join(",")+'\n';
   tournaments.forEach(t=>{
@@ -275,7 +318,6 @@ function exportCSV(){
   showStatus('CSV OK!');
 }
 
-// STATUS
 function showStatus(msg){
   const s=document.getElementById('status');
   s.textContent=msg;
@@ -283,46 +325,10 @@ function showStatus(msg){
   setTimeout(()=>s.style.display='none',2000);
 }
 
-// HIGHLIGHT MASSIMI
-function highlightScoresTable(){
-  const table = document.getElementById('tablebody');
-  if(!table) return;
-  
-  table.querySelectorAll('tr').forEach(row=>{
-    if(row.classList.contains('total-row')) return;
-    const tds = Array.from(row.querySelectorAll('td')).slice(1);
-    if(tds.length===0) return;
-    
-    tds.forEach(td=>{
-      td.classList.remove('bold-max');
-      td.querySelector('input').style.color = 'black';
-    });
-
-    let max = Math.max(...tds.map(td=>parseFloat(td.querySelector('input').value)||0));
-
-    tds.forEach(td=>{
-      const val = parseFloat(td.querySelector('input').value)||0;
-      if(val===max && val>0){
-        td.classList.add('bold-max');
-        td.querySelector('input').style.color = 'red';
-      }
-    });
-  });
-
-  const totalRow = document.querySelector('.total-row');
-  if(totalRow){
-    Array.from(totalRow.querySelectorAll('td')).forEach(td=>{
-      td.style.color='white';
-      td.style.fontWeight='bold';
-    });
-  }
-}
-
-// ------------------------- EVENT LISTENERS -------------------------
+// EVENT LISTENERS
 document.addEventListener('DOMContentLoaded', init);
 window.onclick=e=>{ if(e.target.id==='modal') closeModal(); };
 document.getElementById('tournamentname').addEventListener('keypress',e=>{ if(e.key==='Enter') addTournament(); });
 </script>
-
 </body>
 </html>
