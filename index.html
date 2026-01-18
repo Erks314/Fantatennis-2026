@@ -37,6 +37,8 @@ input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 
 .bold-num{font-weight:bold;}
 .bold-max{font-weight:bold;color:red;}
 @media(max-width:768px){.title{font-size:1.8em;}.table-wrapper{padding:15px;font-size:0.8em;}th,td{padding:6px 8px;height:45px;}}
+/* MONTEPREMI: numeri bianchi e sfondo originale */
+.prize-table td, .prize-table th { color:white; font-weight:bold; background:none; }
 </style>
 </head>
 <body>
@@ -85,7 +87,7 @@ input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 
         </table>
     </div>
 
-    <!-- TABELLA FANTATENNIS -->
+    <!-- TABELLA PUNTEGGI -->
     <div class="table-wrapper">
         <table id="fantatable">
             <thead id="tablehead"></thead>
@@ -146,12 +148,11 @@ const players=[
 ];
 let tournaments=[];
 
-// INIZIALIZZAZIONE
+// ----------- INIZIALIZZAZIONE -----------
 function init(){ loadData(); renderTable(); }
 
-// ----------- TABELLA CENTRALE -----------
-function renderTable(){ renderHead(); renderBody(); updateMaxHighlight(); }
-
+// ----------- RENDER TABELLA CENTRALE -----------
+function renderTable(){ renderHead(); renderBody(); highlightMax(); }
 function renderHead(){
   const head=document.getElementById('tablehead');
   head.innerHTML='<tr><th>TORNEO</th>'+players.map(p=>`<th>
@@ -162,7 +163,6 @@ function renderHead(){
     <div class="player-name">${p.name}</div>
   </th>`).join('')+'</tr>';
 }
-
 function renderBody(){
   const body=document.getElementById('tablebody');
   body.innerHTML='';
@@ -174,17 +174,17 @@ function renderBody(){
     tournaments.forEach((t,i)=>{
       const row=document.createElement('tr');
       row.innerHTML='<td>'+t.name+'<button onclick="deleteTournament('+i+')" style="margin-left:10px;background:#e74c3c;color:white;border:none;padding:2px 8px;border-radius:4px;font-size:0.7em;">X</button></td>'
-        + players.map((p,j)=>`<td><input type="number" step="0.1" value="${t.scores[j]||''}" onchange="updateScore(${i},${j},this.value)" placeholder="—" style="font-weight:bold;"></td>`).join('');
+        + players.map((p,j)=>`<td><input type="number" step="0.1" value="${t.scores[j]||''}" onchange="updateScore(${i},${j},this.value)" placeholder="—" style="font-weight:bold;color:black;"></td>`).join('');
       body.appendChild(row);
     });
   }
-
   const totalRow=document.createElement('tr');
   totalRow.className='total-row';
   totalRow.innerHTML='<th>TOTALE</th>'+players.map((p,j)=>`<td>${getTotal(j)}</td>`).join('');
   body.appendChild(totalRow);
 }
 
+// ----------- CALCOLO TOTALE -----------
 function getTotal(idx){
   return tournaments.reduce((sum,t)=>{
     const s=parseFloat(t.scores[idx]);
@@ -192,20 +192,18 @@ function getTotal(idx){
   },0).toFixed(1);
 }
 
+// ----------- UPDATE SCORE E HIGHLIGHT MAX -----------
 function updateScore(tIdx,pIdx,value){ tournaments[tIdx].scores[pIdx]=value; renderTable(); }
 
-// ----------- MAX HIGHLIGHT DINAMICO -----------
-function updateMaxHighlight(){
-  if(tournaments.length===0) return;
+function highlightMax(){
   for(let j=0;j<players.length;j++){
-    let max = -Infinity;
+    let max=-Infinity;
     tournaments.forEach(t=>{ const s=parseFloat(t.scores[j]); if(!isNaN(s) && s>max) max=s; });
-    // rimuovi vecchi stili
     document.querySelectorAll('#fantatable tbody tr').forEach((row,i)=>{
       if(i<tournaments.length){
         const input=row.querySelectorAll('td input')[j];
         if(input){
-          input.style.color='';
+          input.style.color='black';
           const val=parseFloat(input.value);
           if(!isNaN(val) && val===max) input.style.color='red';
         }
@@ -214,10 +212,9 @@ function updateMaxHighlight(){
   }
 }
 
-// ----------- MODAL TORNEO -----------
+// ----------- MODAL -----------
 function openModal(){ document.getElementById('modal').style.display='block'; document.getElementById('tournamentname').focus(); }
 function closeModal(){ document.getElementById('modal').style.display='none'; }
-
 function addTournament(){
   const name=document.getElementById('tournamentname').value.trim();
   if(!name) return;
@@ -227,7 +224,6 @@ function addTournament(){
   closeModal();
   document.getElementById('tournamentname').value='';
 }
-
 function deleteTournament(idx){
   if(confirm('Eliminare?')){
     tournaments.splice(idx,1);
@@ -242,7 +238,6 @@ function saveData(){
   .then(()=>showStatus("💾 Salvato (cloud)!"))
   .catch(err=>showStatus("❌ Errore salvataggio: "+err));
 }
-
 function resetData(){
   if(confirm('Reset tutto?')){
     tournaments=[];
@@ -251,7 +246,6 @@ function resetData(){
     showStatus('Resettato!');
   }
 }
-
 function loadData(){
   db.collection("fantatennis").doc("shared").onSnapshot(snap=>{
     if(snap.exists){
