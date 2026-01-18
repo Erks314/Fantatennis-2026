@@ -4,275 +4,247 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FantaTennis</title>
+
 <style>
-* {margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#1a472a 0%,#0f2818 50%,#1a472a 100%);min-height:100vh;padding:20px;color:#333;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#1a472a 0%,#0f2818 50%,#1a472a 100%);
+    min-height:100vh;
+    padding:20px;
+}
 .container{max-width:1400px;margin:0 auto;}
-.header{text-align:center;margin-bottom:30px;}
-.title{font-size:2.5em;font-weight:900;background:linear-gradient(135deg,#FFD700 0%,#FFA500 50%,#FF8C00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:2px 2px 4px rgba(0,0,0,0.3);letter-spacing:1px;text-transform:uppercase;}
-.subtitle{font-size:1em;color:#fff;opacity:0.9;font-weight:300;}
-.table-wrapper{background:rgba(255,255,255,0.95);border-radius:15px;padding:20px;box-shadow:0 15px 40px rgba(0,0,0,0.3);overflow:auto;}
-table{width:100%;border-collapse:collapse;font-size:0.9em;}
-th,td{padding:8px 12px;text-align:center;border-bottom:1px solid #eee;height:50px;vertical-align:middle;}
-th{background:linear-gradient(135deg,#1a472a 0%,#2d6b4a 100%);color:white;font-weight:bold;font-size:0.85em;border-radius:8px 8px 0 0;}
-.player-avatar{width:45px;height:45px;margin:0 auto 5px;background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2em;font-weight:bold;color:white;box-shadow:0 3px 10px rgba(255,215,0,0.3);border:2px solid white;}
-.player-name{font-size:0.75em;color:white;font-weight:600;}
-input{width:100%;padding:6px;border:1px solid #ddd;border-radius:5px;font-size:1em;font-weight:500;text-align:center;color:#1a472a;transition:all 0.2s;}
-input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 0 2px rgba(255,215,0,0.2);}
-.total-row {background: linear-gradient(135deg, #1a472a 0%, #2d6b4a 100%)!important;color:white!important;font-weight:bold;font-size:1.1em!important;border-bottom:none!important;border-radius:0 0 0 8px;}
-.total-row td{border-radius:0 0 8px 0;}
-.controls{margin-top:25px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-.btn{padding:12px 25px;border:none;border-radius:8px;font-size:0.95em;font-weight:600;cursor:pointer;transition:all 0.3s;text-transform:uppercase;}
-.btn-primary{background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);color:white;box-shadow:0 6px 15px rgba(255,215,0,0.3);}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(255,215,0,0.4);}
-.btn-success{background:#27ae60;color:white;box-shadow:0 6px 15px rgba(39,174,96,0.3);}
-.btn-success:hover{background:#229954;transform:translateY(-2px);}
-.btn-danger{background:#e74c3c;color:white;box-shadow:0 6px 15px rgba(231,76,60,0.3);}
-.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);}
-.modal-content{background:white;margin:15% auto;padding:25px;border-radius:12px;width:90%;max-width:400px;box-shadow:0 10px 30px rgba(0,0,0,0.3);}
-.modal-header{font-size:1.4em;font-weight:bold;color:#1a472a;margin-bottom:15px;}
-.modal-input{width:100%;padding:10px;margin-bottom:15px;border:2px solid #ddd;border-radius:6px;font-size:1em;}
-.modal-input:focus{outline:none;border-color:#FFD700;}
-.modal-buttons{display:flex;gap:10px;justify-content:flex-end;}
-.status{display:none;background:#27ae60;color:white;padding:10px;border-radius:8px;margin-top:15px;text-align:center;}
-@media(max-width:768px){.title{font-size:1.8em;}.table-wrapper{padding:15px;font-size:0.8em;}th,td{padding:6px 8px;height:45px;}}
-    /* ===== FIX TESTO TABELLA PREMI ===== */
-.prize-table {
-    color: #ffffff !important;
+.header{text-align:center;margin-bottom:25px;}
+.title{
+    font-size:2.5em;
+    font-weight:900;
+    background:linear-gradient(135deg,#FFD700,#FFA500,#FF8C00);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-.prize-table td,
-.prize-table tbody td,
-.prize-table tbody tr td {
-    color: #ffffff !important;
-    opacity: 1 !important;
-    }
+/* ===== TABELLA PREMI ===== */
+.prize-wrapper{max-width:600px;margin:0 auto 30px;}
+.prize-table{
+    width:100%;
+    border-collapse:collapse;
+    background:rgba(0,0,0,0.35);
+    border-radius:12px;
+    overflow:hidden;
+    color:white;
+    font-weight:600;
+}
+.prize-table th{
+    background:linear-gradient(135deg,#FFD700,#FFA500);
+    color:#1a472a;
+    padding:10px;
+}
+.prize-table td{
+    padding:10px;
+    text-align:center;
+    color:white;
+}
+
+/* ===== TABELLA PRINCIPALE ===== */
+.table-wrapper{
+    background:rgba(255,255,255,0.95);
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.3);
+}
+table{width:100%;border-collapse:collapse;font-size:0.9em;}
+th,td{padding:8px 12px;text-align:center;border-bottom:1px solid #eee;}
+th{
+    background:linear-gradient(135deg,#1a472a,#2d6b4a);
+    color:white;
+}
+
+.player-avatar{
+    width:45px;height:45px;
+    margin:0 auto 5px;
+    background:linear-gradient(135deg,#FFD700,#FFA500);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-weight:bold;
+}
+.player-name{font-size:0.75em;color:white;}
+
+input{
+    width:100%;
+    padding:6px;
+    border:1px solid #ddd;
+    border-radius:5px;
+    text-align:center;
+    font-weight:700; /* TUTTI GRASSETTO */
+    color:#1a472a;
+}
+
+.score-winner{
+    color:#e74c3c !important;
+    font-weight:900;
+}
+
+.total-row{
+    background:linear-gradient(135deg,#1a472a,#2d6b4a);
+    color:white;
+    font-weight:bold;
+}
+
+.controls{
+    margin-top:25px;
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+.btn{
+    padding:12px 25px;
+    border:none;
+    border-radius:8px;
+    font-weight:600;
+    cursor:pointer;
+}
+.btn-primary{background:#f1c40f;color:white;}
+.btn-success{background:#27ae60;color:white;}
+.btn-danger{background:#e74c3c;color:white;}
+
+.status{
+    display:none;
+    background:#27ae60;
+    color:white;
+    padding:10px;
+    border-radius:8px;
+    margin-top:15px;
+    text-align:center;
+}
 </style>
 </head>
+
 <body>
 <div class="container">
-    <div class="header">
-        <h1 class="title">⚡ FantaTennis 2026</h1>
-        <p class="subtitle">Ranking condiviso</p>
-    </div>
-    <!-- TABELLA MONTEPREMI -->
+
+<div class="header">
+    <h1 class="title">⚡ FantaTennis 2026</h1>
+</div>
+
 <div class="prize-wrapper">
-    <table class="prize-table">
-        <thead>
-            <tr>
-                <th>TORNEO</th>
-                <th>🥇 1°</th>
-                <th>🥈 2°</th>
-                <th>🥉 3°</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>ATP 500</td>
-                <td>6 €</td>
-                <td>4 €</td>
-                <td>2 €</td>
-            </tr>
-            <tr>
-                <td>ATP 1000</td>
-                <td>10 €</td>
-                <td>5 €</td>
-                <td>3 €</td>
-            </tr>
-            <tr>
-                <td>SLAM</td>
-                <td>14 €</td>
-                <td>8 €</td>
-                <td>5 €</td>
-            </tr>
-            <tr>
-                <td>FINALS</td>
-                <td>20 €</td>
-                <td>10 €</td>
-                <td>8 €</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-    <div class="table-wrapper">
-        <table id="fantatable">
-            <thead id="tablehead"></thead>
-            <tbody id="tablebody"></tbody>
-        </table>
-    </div>
-    <div class="controls">
-        <button class="btn btn-primary" onclick="openModal()">+ Aggiungi Torneo</button>
-        <button class="btn btn-success" onclick="saveData()">💾 Salva</button>
-        <button class="btn btn-danger" onclick="resetData()">🔄 Reset</button>
-        <button onclick="exportCSV()" style="background:#8e44ad;color:white;border:none;padding:8px 12px;border-radius:6px;font-weight:600;">📊 CSV Excel</button>
-    </div>
-    <div id="status" class="status"></div>
+<table class="prize-table">
+<tr><th>TORNEO</th><th>🥇</th><th>🥈</th><th>🥉</th></tr>
+<tr><td>ATP 500</td><td>6 €</td><td>4 €</td><td>2 €</td></tr>
+<tr><td>ATP 1000</td><td>10 €</td><td>5 €</td><td>3 €</td></tr>
+<tr><td>SLAM</td><td>14 €</td><td>8 €</td><td>5 €</td></tr>
+<tr><td>FINALS</td><td>20 €</td><td>10 €</td><td>8 €</td></tr>
+</table>
 </div>
 
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">Nuovo Torneo</div>
-        <input type="text" id="tournamentname" class="modal-input" placeholder="Australian Open, Wimbledon...">
-        <div class="modal-buttons">
-            <button class="btn btn-primary" onclick="addTournament()">Aggiungi</button>
-            <button class="btn" style="background:#ddd;color:#333;" onclick="closeModal()">Annulla</button>
-        </div>
-    </div>
+<div class="table-wrapper">
+<table id="fantatable">
+<thead id="tablehead"></thead>
+<tbody id="tablebody"></tbody>
+</table>
 </div>
 
-<!-- FIREBASE COMPAT -->
+<div class="controls">
+<button class="btn btn-primary" onclick="openModal()">+ Torneo</button>
+<button class="btn btn-success" onclick="saveData()">💾 Salva</button>
+<button class="btn btn-danger" onclick="resetData()">🔄 Reset</button>
+</div>
+
+<div id="status" class="status"></div>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal" style="display:none;">
+<div style="background:white;padding:20px;border-radius:10px;max-width:300px;margin:15% auto;">
+<input id="tournamentname" placeholder="Nome torneo" style="width:100%;padding:8px;">
+<button onclick="addTournament()">OK</button>
+</div>
+</div>
+
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // FIREBASE CONFIG
-  const firebaseConfig = {
-    apiKey: "AIzaSyBqkJaCnZ6Hzm7ytyoj3_dKeZ0kuNbJXbI",
-    authDomain: "fantatennis-ecd35.firebaseapp.com",
-    projectId: "fantatennis-ecd35",
-    storageBucket: "fantatennis-ecd35.firebasestorage.app",
-    messagingSenderId: "6582569035",
-    appId: "1:6582569035:web:d7f57d5473d635197f25ce"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  window.db = db; // serve perché il resto del codice usa db globalmente
-</script>
+firebase.initializeApp({
+ apiKey:"AIzaSyBqkJaCnZ6Hzm7ytyoj3_dKeZ0kuNbJXbI",
+ authDomain:"fantatennis-ecd35.firebaseapp.com",
+ projectId:"fantatennis-ecd35"
+});
+const db=firebase.firestore();
 
-<script>
 const players=[
-  {name:'Gennaro',photo:'Gennaro.jpg'},
-  {name:'Mirko',photo:'Mirko.jpg'},
-  {name:'Federico',photo:'Federico.jpg'},
-  {name:'Ciro',photo:'Ciro.jpg'},
-  {name:'Damiano',photo:'Damiano.jpg'},
-  {name:'Carlo',photo:'Carlo.jpg'},
-  {name:'Francesco',photo:'Francesco.jpg'},
-  {name:'Friarello',photo:'Friarello.jpg'},
-  {name:'Giuseppe',photo:'Giuseppe.jpg'},
-  {name:'Donatello',photo:'Donatello.jpg'}
+ 'Gennaro','Mirko','Federico','Ciro','Damiano',
+ 'Carlo','Francesco','Friarello','Giuseppe','Donatello'
 ];
+
 let tournaments=[];
 
-// ------------------------- FUNZIONI -------------------------
-function init(){ loadData(); }
-
-function renderTable(){ renderHead(); renderBody(); }
+function render(){
+renderHead(); renderBody(); highlight();
+}
 
 function renderHead(){
-  const head=document.getElementById('tablehead');
-  head.innerHTML='<tr><th>TORNEO</th>'+players.map(p=>`<th>
-    <div class="player-avatar">
-      <img src="${p.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid white;" 
-      onerror="this.style.display=\'none\'; this.parentNode.textContent=\'${p.name.charAt(0)}\';">
-    </div>
-    <div class="player-name">${p.name}</div>
-  </th>`).join('')+'</tr>';
+tablehead.innerHTML='<tr><th>TORNEO</th>'+players.map(p=>`<th>${p}</th>`).join('')+'</tr>';
 }
 
 function renderBody(){
-  const body=document.getElementById('tablebody');
-  body.innerHTML='';
-
-  if(tournaments.length===0){
-    const row=document.createElement('tr');
-    row.innerHTML='<td colspan="'+(players.length+1)+'" style="text-align:center;color:#555;padding:15px;">Nessun torneo ancora</td>';
-    body.appendChild(row);
-  } else {
-    tournaments.forEach((t,i)=>{
-      const row=document.createElement('tr');
-      row.innerHTML='<td>'+t.name+'<button onclick="deleteTournament('+i+')" style="margin-left:10px;background:#e74c3c;color:white;border:none;padding:2px 8px;border-radius:4px;font-size:0.7em;">X</button></td>'
-        + players.map((p,j)=>`<td><input type="number" step="0.1" value="${t.scores[j]||''}" onchange="updateScore(${i},${j},this.value)" placeholder="—"></td>`).join('');
-      body.appendChild(row);
-    });
-  }
-
-  const totalRow=document.createElement('tr');
-  totalRow.className='total-row';
-  totalRow.innerHTML='<th>TOTALE</th>'+players.map((p,j)=>`<td>${getTotal(j)}</td>`).join('');
-  body.appendChild(totalRow);
+tablebody.innerHTML='';
+tournaments.forEach((t,i)=>{
+tablebody.innerHTML+=
+'<tr><td>'+t.name+'</td>'+
+players.map((_,j)=>`<td><input value="${t.scores[j]||''}" onchange="setScore(${i},${j},this.value)"></td>`).join('')
++'</tr>';
+});
 }
 
-function getTotal(idx){
-  return tournaments.reduce((sum,t)=>{
-    const s=parseFloat(t.scores[idx]);
-    return sum + (isNaN(s)?0:s);
-  },0).toFixed(1);
+function setScore(i,j,v){
+tournaments[i].scores[j]=parseFloat(v);
+render();
 }
 
-function updateScore(tIdx,pIdx,value){ tournaments[tIdx].scores[pIdx]=value; renderTable(); }
+function highlight(){
+document.querySelectorAll('#tablebody tr').forEach((row,i)=>{
+let vals=[...row.querySelectorAll('input')].map(x=>parseFloat(x.value)).filter(v=>!isNaN(v));
+let max=Math.max(...vals);
+row.querySelectorAll('input').forEach(inp=>{
+inp.classList.toggle('score-winner',parseFloat(inp.value)===max);
+});
+});
+}
 
-function openModal(){ document.getElementById('modal').style.display='block'; document.getElementById('tournamentname').focus(); }
-function closeModal(){ document.getElementById('modal').style.display='none'; }
-
+function openModal(){modal.style.display='block';}
 function addTournament(){
-  const name=document.getElementById('tournamentname').value.trim();
-  if(!name) return;
-  tournaments.push({name:name,scores:{}});
-  saveData();
-  renderTable();
-  closeModal();
-  document.getElementById('tournamentname').value='';
-}
-
-function deleteTournament(idx){
-  if(confirm('Eliminare?')){
-    tournaments.splice(idx,1);
-    saveData();
-    renderTable();
-  }
+let n=tournamentname.value.trim();
+if(!n)return;
+tournaments.push({name:n,scores:{}});
+saveData(); modal.style.display='none'; tournamentname.value='';
+render();
 }
 
 function saveData(){
-  db.collection("fantatennis").doc("shared").set({tournaments})
-  .then(()=>showStatus("💾 Salvato (cloud)!"))
-  .catch(err=>showStatus("❌ Errore salvataggio: "+err));
+db.collection("fantatennis").doc("shared").set({tournaments})
+.then(()=>statusMsg("💾 Salvato"));
 }
 
 function resetData(){
-  if(confirm('Reset tutto?')){
-    tournaments=[];
-    db.collection("fantatennis").doc("shared").set({tournaments});
-    renderTable();
-    showStatus('Resettato!');
-  }
+tournaments=[];
+saveData(); render();
 }
 
-function loadData(){
-  db.collection("fantatennis").doc("shared").onSnapshot(snap=>{
-    if(snap.exists){
-      tournaments = snap.data().tournaments || [];
-      renderTable();
-    }
-  });
+function statusMsg(m){
+status.textContent=m;
+status.style.display='block';
+setTimeout(()=>status.style.display='none',2000);
 }
 
-function exportCSV(){
-  let csv = 'TORNEO,' + players.map(p=>p.name).join(",")+'\n';
-  tournaments.forEach(t=>{
-    csv += t.name + ',' + players.map((p,j)=>t.scores[j]||'').join(',')+'\n';
-  });
-  csv += 'TOTALE,' + players.map((p,j)=>getTotal(j)).join(',');
-  const a=document.createElement('a');
-  a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);
-  a.download="FantaTennis.csv";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  showStatus('CSV OK!');
-}
-
-function showStatus(msg){
-  const s=document.getElementById('status');
-  s.textContent=msg;
-  s.style.display='block';
-  setTimeout(()=>s.style.display='none',2000);
-}
-
-// ------------------------- EVENT LISTENERS -------------------------
-document.addEventListener('DOMContentLoaded', init);
-window.onclick=e=>{ if(e.target.id==='modal') closeModal(); };
-document.getElementById('tournamentname').addEventListener('keypress',e=>{ if(e.key==='Enter') addTournament(); });
+db.collection("fantatennis").doc("shared").onSnapshot(s=>{
+tournaments=s.exists?s.data().tournaments||[]:[];
+render();
+});
 </script>
 </body>
 </html>
