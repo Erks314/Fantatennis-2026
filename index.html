@@ -6,245 +6,219 @@
 <title>FantaTennis</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-    font-family:'Segoe UI',sans-serif;
-    background:linear-gradient(135deg,#1a472a 0%,#0f2818 50%,#1a472a 100%);
-    min-height:100vh;
-    padding:20px;
-}
-.container{max-width:1400px;margin:0 auto;}
-.header{text-align:center;margin-bottom:25px;}
-.title{
-    font-size:2.5em;
-    font-weight:900;
-    background:linear-gradient(135deg,#FFD700,#FFA500,#FF8C00);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ===== TABELLA PREMI ===== */
-.prize-wrapper{max-width:600px;margin:0 auto 30px;}
-.prize-table{
-    width:100%;
-    border-collapse:collapse;
-    background:rgba(0,0,0,0.35);
-    border-radius:12px;
-    overflow:hidden;
-    color:white;
-    font-weight:600;
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #1a472a, #0f281c);
+  color: white;
+  text-align: center;
+  padding: 10px;
 }
-.prize-table th{
-    background:linear-gradient(135deg,#FFD700,#FFA500);
-    color:#1a472a;
-    padding:10px;
+
+/* ===== TITOLO ===== */
+h1 {
+  margin-bottom: 10px;
 }
-.prize-table td{
-    padding:10px;
-    text-align:center;
-    color:white;
+
+/* ===== TABELLINA MONTEPREMI ===== */
+.prize-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.prize-table {
+  border-collapse: collapse;
+  background: rgba(0,0,0,0.35);
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 320px;
+}
+
+.prize-table th {
+  background: #1fa463;
+  color: white;
+  padding: 8px;
+  font-weight: bold;
+}
+
+.prize-table td {
+  padding: 6px;
+  font-weight: bold;
+  color: white;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.prize-table .winner {
+  color: #ff3b3b;
+  font-weight: 900;
+}
+
+/* ===== CONTROLLI ===== */
+.controls {
+  margin-bottom: 15px;
+}
+
+button {
+  padding: 8px 12px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  background: #1fa463;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* ===== TABELLA PRINCIPALE ===== */
-.table-wrapper{
-    background:rgba(255,255,255,0.95);
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.3);
-}
-table{width:100%;border-collapse:collapse;font-size:0.9em;}
-th,td{padding:8px 12px;text-align:center;border-bottom:1px solid #eee;}
-th{
-    background:linear-gradient(135deg,#1a472a,#2d6b4a);
-    color:white;
+.table-wrapper {
+  overflow-x: auto;
 }
 
-.player-avatar{
-    width:45px;height:45px;
-    margin:0 auto 5px;
-    background:linear-gradient(135deg,#FFD700,#FFA500);
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    font-weight:bold;
-}
-.player-name{font-size:0.75em;color:white;}
-
-input{
-    width:100%;
-    padding:6px;
-    border:1px solid #ddd;
-    border-radius:5px;
-    text-align:center;
-    font-weight:700; /* TUTTI GRASSETTO */
-    color:#1a472a;
+.main-table {
+  border-collapse: collapse;
+  margin: auto;
+  min-width: 700px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.score-winner{
-    color:#e74c3c !important;
-    font-weight:900;
+.main-table th {
+  background: #1fa463;
+  padding: 10px;
+  font-weight: bold;
 }
 
-.total-row{
-    background:linear-gradient(135deg,#1a472a,#2d6b4a);
-    color:white;
-    font-weight:bold;
+.main-table td {
+  padding: 6px;
+  border-top: 1px solid rgba(255,255,255,0.15);
 }
 
-.controls{
-    margin-top:25px;
-    display:flex;
-    gap:12px;
-    justify-content:center;
-    flex-wrap:wrap;
+/* ===== IMMAGINI ===== */
+.player-img {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 50%;
 }
-.btn{
-    padding:12px 25px;
-    border:none;
-    border-radius:8px;
-    font-weight:600;
-    cursor:pointer;
-}
-.btn-primary{background:#f1c40f;color:white;}
-.btn-success{background:#27ae60;color:white;}
-.btn-danger{background:#e74c3c;color:white;}
 
-.status{
-    display:none;
-    background:#27ae60;
-    color:white;
-    padding:10px;
-    border-radius:8px;
-    margin-top:15px;
-    text-align:center;
+/* ===== INPUT ===== */
+input {
+  width: 60px;
+  text-align: center;
+  font-weight: bold;
 }
 </style>
 </head>
 
 <body>
-<div class="container">
 
-<div class="header">
-    <h1 class="title">⚡ FantaTennis 2026</h1>
-</div>
+<h1>FantaTennis</h1>
 
+<!-- TABELLINA MONTEPREMI -->
 <div class="prize-wrapper">
-<table class="prize-table">
-<tr><th>TORNEO</th><th>🥇</th><th>🥈</th><th>🥉</th></tr>
-<tr><td>ATP 500</td><td>6 €</td><td>4 €</td><td>2 €</td></tr>
-<tr><td>ATP 1000</td><td>10 €</td><td>5 €</td><td>3 €</td></tr>
-<tr><td>SLAM</td><td>14 €</td><td>8 €</td><td>5 €</td></tr>
-<tr><td>FINALS</td><td>20 €</td><td>10 €</td><td>8 €</td></tr>
-</table>
+  <table class="prize-table">
+    <thead>
+      <tr>
+        <th>Torneo</th>
+        <th>1°</th>
+        <th>2°</th>
+        <th>3°</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ATP 500</td>
+        <td class="winner">6€</td>
+        <td>4€</td>
+        <td>2€</td>
+      </tr>
+      <tr>
+        <td>ATP 1000</td>
+        <td class="winner">10€</td>
+        <td>5€</td>
+        <td>3€</td>
+      </tr>
+      <tr>
+        <td>Slam</td>
+        <td class="winner">14€</td>
+        <td>8€</td>
+        <td>5€</td>
+      </tr>
+      <tr>
+        <td>Final</td>
+        <td class="winner">20€</td>
+        <td>10€</td>
+        <td>8€</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
-<div class="table-wrapper">
-<table id="fantatable">
-<thead id="tablehead"></thead>
-<tbody id="tablebody"></tbody>
-</table>
-</div>
-
+<!-- CONTROLLI -->
 <div class="controls">
-<button class="btn btn-primary" onclick="openModal()">+ Torneo</button>
-<button class="btn btn-success" onclick="saveData()">💾 Salva</button>
-<button class="btn btn-danger" onclick="resetData()">🔄 Reset</button>
+  <button onclick="saveData()">Salva</button>
+  <button onclick="resetData()">Reset</button>
 </div>
 
-<div id="status" class="status"></div>
+<!-- TABELLA PRINCIPALE -->
+<div class="table-wrapper">
+<table class="main-table">
+  <thead>
+    <tr>
+      <th>Giocatore</th>
+      <th>Foto</th>
+      <th>Punti</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody">
+    <tr>
+      <td>Giocatore 1</td>
+      <td><img src="1.jpg" class="player-img"></td>
+      <td><input type="number"></td>
+    </tr>
+    <tr>
+      <td>Giocatore 2</td>
+      <td><img src="2.jpg" class="player-img"></td>
+      <td><input type="number"></td>
+    </tr>
+    <tr>
+      <td>Giocatore 3</td>
+      <td><img src="3.jpg" class="player-img"></td>
+      <td><input type="number"></td>
+    </tr>
+  </tbody>
+</table>
 </div>
-
-<!-- MODAL -->
-<div id="modal" class="modal" style="display:none;">
-<div style="background:white;padding:20px;border-radius:10px;max-width:300px;margin:15% auto;">
-<input id="tournamentname" placeholder="Nome torneo" style="width:100%;padding:8px;">
-<button onclick="addTournament()">OK</button>
-</div>
-</div>
-
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore-compat.js"></script>
 
 <script>
-firebase.initializeApp({
- apiKey:"AIzaSyBqkJaCnZ6Hzm7ytyoj3_dKeZ0kuNbJXbI",
- authDomain:"fantatennis-ecd35.firebaseapp.com",
- projectId:"fantatennis-ecd35"
-});
-const db=firebase.firestore();
-
-const players=[
- 'Gennaro','Mirko','Federico','Ciro','Damiano',
- 'Carlo','Francesco','Friarello','Giuseppe','Donatello'
-];
-
-let tournaments=[];
-
-function render(){
-renderHead(); renderBody(); highlight();
+function saveData() {
+  const inputs = document.querySelectorAll("input");
+  const values = [];
+  inputs.forEach(i => values.push(i.value));
+  localStorage.setItem("fantatennis", JSON.stringify(values));
+  alert("Salvato");
 }
 
-function renderHead(){
-tablehead.innerHTML='<tr><th>TORNEO</th>'+players.map(p=>`<th>${p}</th>`).join('')+'</tr>';
+function resetData() {
+  localStorage.removeItem("fantatennis");
+  document.querySelectorAll("input").forEach(i => i.value = "");
 }
 
-function renderBody(){
-tablebody.innerHTML='';
-tournaments.forEach((t,i)=>{
-tablebody.innerHTML+=
-'<tr><td>'+t.name+'</td>'+
-players.map((_,j)=>`<td><input value="${t.scores[j]||''}" onchange="setScore(${i},${j},this.value)"></td>`).join('')
-+'</tr>';
-});
-}
-
-function setScore(i,j,v){
-tournaments[i].scores[j]=parseFloat(v);
-render();
-}
-
-function highlight(){
-document.querySelectorAll('#tablebody tr').forEach((row,i)=>{
-let vals=[...row.querySelectorAll('input')].map(x=>parseFloat(x.value)).filter(v=>!isNaN(v));
-let max=Math.max(...vals);
-row.querySelectorAll('input').forEach(inp=>{
-inp.classList.toggle('score-winner',parseFloat(inp.value)===max);
-});
-});
-}
-
-function openModal(){modal.style.display='block';}
-function addTournament(){
-let n=tournamentname.value.trim();
-if(!n)return;
-tournaments.push({name:n,scores:{}});
-saveData(); modal.style.display='none'; tournamentname.value='';
-render();
-}
-
-function saveData(){
-db.collection("fantatennis").doc("shared").set({tournaments})
-.then(()=>statusMsg("💾 Salvato"));
-}
-
-function resetData(){
-tournaments=[];
-saveData(); render();
-}
-
-function statusMsg(m){
-status.textContent=m;
-status.style.display='block';
-setTimeout(()=>status.style.display='none',2000);
-}
-
-db.collection("fantatennis").doc("shared").onSnapshot(s=>{
-tournaments=s.exists?s.data().tournaments||[]:[];
-render();
-});
+window.onload = () => {
+  const data = JSON.parse(localStorage.getItem("fantatennis"));
+  if (!data) return;
+  document.querySelectorAll("input").forEach((i, idx) => {
+    i.value = data[idx] || "";
+  });
+};
 </script>
+
 </body>
 </html>
