@@ -37,105 +37,65 @@ input:focus{outline:none;border-color:#FFD700;background:#fffef0;box-shadow:0 0 
 .bold-num{font-weight:bold;}
 .bold-max{font-weight:bold;color:red;}
 @media(max-width:768px){.title{font-size:1.8em;}.table-wrapper{padding:15px;font-size:0.8em;}th,td{padding:6px 8px;height:45px;}}
-/* ===== FIX TESTO TABELLA PREMI ===== */
+
+/* Tabella montepremi */
 .prize-table td, .prize-table th { color:white; font-weight:bold; }
-    function highlightPrizeTable() {
-  const rows = document.querySelectorAll('.prize-table tbody tr');
-  rows.forEach(row => {
-    let max = 0;
-    const tds = Array.from(row.querySelectorAll('td')).slice(1); // prendi solo colonne numeriche
-    tds.forEach(td => {
-      td.style.fontWeight = 'bold'; // tutti i numeri in grassetto
-      const num = parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.')) || 0;
-      if (num > max) max = num;
-    });
-    tds.forEach(td => {
-      const num = parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.')) || 0;
-      if (num === max) td.style.color = 'red'; // massimo in rosso
-    });
-  });
-}
-
-// Chiamala subito dopo che la pagina e la tabella sono caricate
-document.addEventListener('DOMContentLoaded', () => {
-  highlightPrizeTable();
-});
-  <script>
-  // ... tutto il tuo script esistente qui ...
-
-  // ---- Aggiungi questo in fondo ----
-  function highlightPrizeTable() {
-      const rows = document.querySelectorAll('.prize-table tbody tr');
-      rows.forEach(row => {
-          const tds = Array.from(row.querySelectorAll('td')).slice(1); // numeri
-          tds.forEach(td => td.classList.add('bold-num')); // tutti in grassetto
-
-          let max = Math.max(...tds.map(td => parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.')) || 0));
-
-          tds.forEach(td => {
-              const num = parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.')) || 0;
-              if(num === max) td.classList.add('bold-max'); // massimo in rosso
-          });
-      });
-  }
-
-  window.addEventListener('load', () => {
-      highlightPrizeTable();
-  });
-</script>  
 </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
         <h1 class="title">⚡ FantaTennis 2026</h1>
-        <!-- scritta "Ranking condiviso" rimossa -->
     </div>
+
     <!-- TABELLA MONTEPREMI -->
-<div class="prize-wrapper">
-    <table class="prize-table">
-        <thead>
-            <tr>
-                <th>TORNEO</th>
-                <th>🥇 1°</th>
-                <th>🥈 2°</th>
-                <th>🥉 3°</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>ATP 500</td>
-                <td class="bold-max">6 €</td>
-                <td class="bold-num">4 €</td>
-                <td class="bold-num">2 €</td>
-            </tr>
-            <tr>
-                <td>ATP 1000</td>
-                <td class="bold-max">10 €</td>
-                <td class="bold-num">5 €</td>
-                <td class="bold-num">3 €</td>
-            </tr>
-            <tr>
-                <td>SLAM</td>
-                <td class="bold-max">14 €</td>
-                <td class="bold-num">8 €</td>
-                <td class="bold-num">5 €</td>
-            </tr>
-            <tr>
-                <td>FINALS</td>
-                <td class="bold-max">20 €</td>
-                <td class="bold-num">10 €</td>
-                <td class="bold-num">8 €</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <div class="prize-wrapper table-wrapper" style="margin-bottom:20px;">
+        <table class="prize-table">
+            <thead>
+                <tr>
+                    <th>TORNEO</th>
+                    <th>🥇 1°</th>
+                    <th>🥈 2°</th>
+                    <th>🥉 3°</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ATP 500</td>
+                    <td>6 €</td>
+                    <td>4 €</td>
+                    <td>2 €</td>
+                </tr>
+                <tr>
+                    <td>ATP 1000</td>
+                    <td>10 €</td>
+                    <td>5 €</td>
+                    <td>3 €</td>
+                </tr>
+                <tr>
+                    <td>SLAM</td>
+                    <td>14 €</td>
+                    <td>8 €</td>
+                    <td>5 €</td>
+                </tr>
+                <tr>
+                    <td>FINALS</td>
+                    <td>20 €</td>
+                    <td>10 €</td>
+                    <td>8 €</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TABELLA FANTATENNIS -->
     <div class="table-wrapper">
         <table id="fantatable">
             <thead id="tablehead"></thead>
             <tbody id="tablebody"></tbody>
         </table>
     </div>
+
     <div class="controls">
         <button class="btn btn-primary" onclick="openModal()">+ Aggiungi Torneo</button>
         <button class="btn btn-success" onclick="saveData()">💾 Salva</button>
@@ -145,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div id="status" class="status"></div>
 </div>
 
+<!-- MODAL -->
 <div id="modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">Nuovo Torneo</div>
@@ -156,24 +117,24 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 </div>
 
-<!-- FIREBASE COMPAT -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore-compat.js"></script>
-
 <script>
-  const firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyBqkJaCnZ6Hzm7ytyoj3_dKeZ0kuNbJXbI",
     authDomain: "fantatennis-ecd35.firebaseapp.com",
     projectId: "fantatennis-ecd35",
     storageBucket: "fantatennis-ecd35.firebasestorage.app",
     messagingSenderId: "6582569035",
     appId: "1:6582569035:web:d7f57d5473d635197f25ce"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  window.db = db;
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+window.db = db;
 </script>
 
+<!-- SCRIPT PRINCIPALE -->
 <script>
 const players=[
   {name:'Gennaro',photo:'Gennaro.jpg'},
@@ -189,27 +150,28 @@ const players=[
 ];
 let tournaments=[];
 
-// ------------------------- FUNZIONI -------------------------
-function init(){ loadData(); renderPrizeTable(); }
+// INIZIALIZZAZIONE
+function init(){ loadData(); highlightPrizeTable(); renderTable(); }
 
-function renderPrizeTable(){
-  const rows=document.querySelectorAll('.prize-table tbody tr');
-  rows.forEach(row=>{
-    let values=[];
-    row.querySelectorAll('td').forEach((td,i)=>{
-      if(i>0){
-        let val=parseFloat(td.textContent);
-        values.push(val);
-        td.classList.add('bold-num');
-      }
+// ----------- FUNZIONI MONTEPREMI -----------
+function highlightPrizeTable() {
+  const rows = document.querySelectorAll('.prize-table tbody tr');
+  rows.forEach(row => {
+    let max = 0;
+    const tds = Array.from(row.querySelectorAll('td')).slice(1);
+    tds.forEach(td=>{
+      td.style.fontWeight='bold';
+      const num=parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.'))||0;
+      if(num>max) max=num;
     });
-    let max=Math.max(...values);
-    row.querySelectorAll('td').forEach((td,i)=>{
-      if(i>0 && parseFloat(td.textContent)==max) td.classList.add('bold-max');
+    tds.forEach(td=>{
+      const num=parseFloat(td.textContent.replace(/[^\d.,]/g,'').replace(',','.'))||0;
+      if(num===max) td.style.color='red';
     });
   });
 }
 
+// ----------- TABELLA CENTRALE -----------
 function renderTable(){ renderHead(); renderBody(); }
 
 function renderHead(){
@@ -226,7 +188,6 @@ function renderHead(){
 function renderBody(){
   const body=document.getElementById('tablebody');
   body.innerHTML='';
-
   if(tournaments.length===0){
     const row=document.createElement('tr');
     row.innerHTML='<td colspan="'+(players.length+1)+'" style="text-align:center;color:#555;padding:15px;">Nessun torneo ancora</td>';
@@ -249,12 +210,13 @@ function renderBody(){
 function getTotal(idx){
   return tournaments.reduce((sum,t)=>{
     const s=parseFloat(t.scores[idx]);
-    return sum + (isNaN(s)?0:s);
+    return sum+(isNaN(s)?0:s);
   },0).toFixed(1);
 }
 
 function updateScore(tIdx,pIdx,value){ tournaments[tIdx].scores[pIdx]=value; renderTable(); }
 
+// ----------- MODAL TORNEO -----------
 function openModal(){ document.getElementById('modal').style.display='block'; document.getElementById('tournamentname').focus(); }
 function closeModal(){ document.getElementById('modal').style.display='none'; }
 
@@ -276,6 +238,7 @@ function deleteTournament(idx){
   }
 }
 
+// ----------- FIREBASE CRUD -----------
 function saveData(){
   db.collection("fantatennis").doc("shared").set({tournaments})
   .then(()=>showStatus("💾 Salvato (cloud)!"))
@@ -300,6 +263,7 @@ function loadData(){
   });
 }
 
+// ----------- CSV -----------
 function exportCSV(){
   let csv = 'TORNEO,' + players.map(p=>p.name).join(",")+'\n';
   tournaments.forEach(t=>{
@@ -315,6 +279,7 @@ function exportCSV(){
   showStatus('CSV OK!');
 }
 
+// ----------- STATUS -----------
 function showStatus(msg){
   const s=document.getElementById('status');
   s.textContent=msg;
@@ -322,7 +287,7 @@ function showStatus(msg){
   setTimeout(()=>s.style.display='none',2000);
 }
 
-// ------------------------- EVENT LISTENERS -------------------------
+// ----------- EVENT LISTENERS -----------
 document.addEventListener('DOMContentLoaded', init);
 window.onclick=e=>{ if(e.target.id==='modal') closeModal(); };
 document.getElementById('tournamentname').addEventListener('keypress',e=>{ if(e.key==='Enter') addTournament(); });
